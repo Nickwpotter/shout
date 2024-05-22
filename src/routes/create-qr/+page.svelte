@@ -195,6 +195,8 @@
   });
 </script>
 
+
+
 <style>
   .loading-spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
@@ -215,8 +217,8 @@
   }
 </style>
 
-<div class="p-8 bg-base-100 text-black min-h-screen flex flex-col items-center">
-  <h1 class="text-3xl font-bold text-black mb-6">Create QR Code</h1>
+<div class="p-8 bg-base-100 text-black min-h-screen flex flex-col items-center ">
+  <h1 class="text-3xl font-bold text-white mb-2">Create QR Code</h1>
   <div class="w-full max-w-sm shadow-lg rounded-lg p-6 bg-white">
     <div class="form-control mb-4">
       <label class="label" for="influencerName">
@@ -234,7 +236,7 @@
       <label class="label" for="promotionDuration">
         <span class="label-text text-black">Promotion Duration</span>
       </label>
-      <input id="promotionDuration" type="number" bind:value={promotionDuration} class="input input-bordered border-black text-black"/>
+      <input id="promotionDuration" type="number" bind:value={promotionDuration} class="input input-bordered border-black text-white"/>
       <div class="mt-2">
         <label class="inline-flex items-center">
           <input type="radio" name="durationUnit" value="days" bind:group={durationUnit} checked={durationUnit === 'days'} class="form-radio text-black"/>
@@ -250,7 +252,7 @@
       <label class="label" for="storeName">
         <span class="label-text text-black">Store</span>
       </label>
-      <input id="storeName" type="text" bind:value={storeName} class="input input-bordered border-black text-black"/>
+      <input id="storeName" type="text" bind:value={storeName} class="input input-bordered border-black text-white"/>
     </div>
     <button class="btn btn-primary w-full shadow-md" on:click={generateQRCode} disabled={$loading}>
       {#if $loading}
