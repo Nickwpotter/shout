@@ -39,20 +39,20 @@ import { collection, addDoc } from "firebase/firestore";
   };
 </script>
 
-<div class="p-8 bg-base-100 text-black min-h-screen flex flex-col items-center">
-  <h1 class="text-3xl font-bold text-black mb-6">Create QR Code</h1>
+<div class="p-8 bg-base-100 text-black min-h-screen flex flex-col items-center ">
+  <h1 class="text-3xl font-bold text-white mb-2">Create QR Code</h1>
   <div class="w-full max-w-sm shadow-lg rounded-lg p-6 bg-white">
     <div class="form-control mb-4">
       <label class="label">
-        <span class="label-text text-black">Base URL</span>
+        <span class="text-black">Base URL</span>
       </label>
-      <input type="text" bind:value={baseUrl} class="input input-bordered border-black text-black"/>
+      <input type="text" bind:value={baseUrl} class="input input-bordered border-black text-white"/>
     </div>
     <div class="form-control mb-4">
       <label class="label">
-        <span class="label-text text-black">Influencer Name</span>
+        <span class="text-black">Influencer Name</span>
       </label>
-      <input type="text" bind:value={influencerName} class="input input-bordered border-black text-black"/>
+      <input type="text" bind:value={influencerName} class="input input-bordered border-black text-white"/>
     </div>
     <button class="btn btn-primary w-full shadow-md" on:click={generateQRCode}>Generate QR Code</button>
   </div>
