@@ -1,24 +1,44 @@
 <script>
-import {db} from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
+  import { db } from "../../firebase";
+  import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+  import { writable } from "svelte/store";
 
-  let baseUrl = '';
+  const baseUrl = 'https://shout-b6d30.web.app/transaction';
   let influencerName = '';
   let qrCodeDataURL = '';
+  let errorMessage = writable('');
 
   const generateQRCode = async () => {
-    const url = `${baseUrl}?influencer=${encodeURIComponent(influencerName)}`;
-    const encodedUrl = encodeURIComponent(url);
-    const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodedUrl}&size=200x200&format=png`;
-    console.log(url);
-    try {
-      qrCodeDataURL = apiUrl;
-      await addDoc(collection(db, "qrcodes"), {
-        influencerName,
-        url
-      });
-    } catch (error) {
-      console.error("Error generating QR Code:", error);
+    if (!influencerName.trim()) {
+      errorMessage.set('Influencer name cannot be empty.');
+      return;
+    }
+
+    const q = query(collection(db, "qrcodes"), where("influencerName", "==", influencerName));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // If an existing QR code is found, use it
+      const doc = querySnapshot.docs[0];
+      qrCodeDataURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(doc.data().url)}&size=200x200&format=png`;
+      errorMessage.set('');
+    } else {
+      // If no existing QR code is found, create a new one
+      const url = `${baseUrl}?influencer=${encodeURIComponent(influencerName)}`;
+      const encodedUrl = encodeURIComponent(url);
+      const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodedUrl}&size=200x200&format=png`;
+
+      try {
+        qrCodeDataURL = apiUrl;
+        await addDoc(collection(db, "qrcodes"), {
+          influencerName,
+          url
+        });
+        errorMessage.set('');
+      } catch (error) {
+        console.error("Error generating QR Code:", error);
+        errorMessage.set('Error generating QR code. Please try again.');
+      }
     }
   };
 
@@ -35,7 +55,10 @@ import { collection, addDoc } from "firebase/firestore";
         a.click();
         window.URL.revokeObjectURL(url);
       })
-      .catch(err => console.error('Error downloading the QR code:', err));
+      .catch(err => {
+        console.error('Error downloading the QR code:', err);
+        errorMessage.set('Error downloading the QR code. Please try again.');
+      });
   };
 </script>
 
@@ -43,17 +66,14 @@ import { collection, addDoc } from "firebase/firestore";
   <h1 class="text-3xl font-bold text-black mb-6">Create QR Code</h1>
   <div class="w-full max-w-sm shadow-lg rounded-lg p-6 bg-white">
     <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text text-black">Base URL</span>
-      </label>
-      <input type="text" bind:value={baseUrl} class="input input-bordered border-black text-black"/>
-    </div>
-    <div class="form-control mb-4">
-      <label class="label">
+      <label class="label" for="influencerName">
         <span class="label-text text-black">Influencer Name</span>
       </label>
-      <input type="text" bind:value={influencerName} class="input input-bordered border-black text-black"/>
+      <input id="influencerName" type="text" bind:value={influencerName} class="input input-bordered border-black text-black"/>
     </div>
+    {#if $errorMessage}
+      <div class="text-red-500 mb-4">{$errorMessage}</div>
+    {/if}
     <button class="btn btn-primary w-full shadow-md" on:click={generateQRCode}>Generate QR Code</button>
   </div>
   {#if qrCodeDataURL}
