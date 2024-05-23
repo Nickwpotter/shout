@@ -10,15 +10,19 @@ return {
 	assets: new Set(["favicon.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.D7sWOgor.js","app":"_app/immutable/entry/app.B5GvbUty.js","imports":["_app/immutable/entry/start.D7sWOgor.js","_app/immutable/chunks/entry.COwiGMr7.js","_app/immutable/chunks/scheduler.Cs0xm5t1.js","_app/immutable/chunks/index.3BRkCKYy.js","_app/immutable/entry/app.B5GvbUty.js","_app/immutable/chunks/scheduler.Cs0xm5t1.js","_app/immutable/chunks/index.CwXh1Flu.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
+		client: {"start":"_app/immutable/entry/start.JlgPW7nY.js","app":"_app/immutable/entry/app.NwFazlxT.js","imports":["_app/immutable/entry/start.JlgPW7nY.js","_app/immutable/chunks/entry.77B6Ku6h.js","_app/immutable/chunks/scheduler.Bnq60-53.js","_app/immutable/chunks/index.Cyf_2U9l.js","_app/immutable/entry/app.NwFazlxT.js","_app/immutable/chunks/scheduler.Bnq60-53.js","_app/immutable/chunks/index.Ds0bHGC8.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
-			__memo(() => import('./nodes/2.js')),
 			__memo(() => import('./nodes/3.js')),
 			__memo(() => import('./nodes/4.js')),
 			__memo(() => import('./nodes/5.js')),
-			__memo(() => import('./nodes/6.js'))
+			__memo(() => import('./nodes/6.js')),
+			__memo(() => import('./nodes/7.js')),
+			__memo(() => import('./nodes/8.js')),
+			__memo(() => import('./nodes/9.js')),
+			__memo(() => import('./nodes/10.js')),
+			__memo(() => import('./nodes/11.js'))
 		],
 		routes: [
 			{
@@ -29,31 +33,59 @@ return {
 				endpoint: null
 			},
 			{
+				id: "/campaigns",
+				pattern: /^\/campaigns\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 3 },
+				endpoint: null
+			},
+			{
+				id: "/campaigns/[codeId]",
+				pattern: /^\/campaigns\/([^/]+?)\/?$/,
+				params: [{"name":"codeId","optional":false,"rest":false,"chained":false}],
+				page: { layouts: [0,], errors: [1,], leaf: 4 },
+				endpoint: null
+			},
+			{
 				id: "/create-qr",
 				pattern: /^\/create-qr\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 3 },
+				page: { layouts: [0,], errors: [1,], leaf: 5 },
 				endpoint: null
 			},
 			{
 				id: "/error",
 				pattern: /^\/error\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 4 },
+				page: { layouts: [0,], errors: [1,], leaf: 6 },
+				endpoint: null
+			},
+			{
+				id: "/sign-up",
+				pattern: /^\/sign-up\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 7 },
 				endpoint: null
 			},
 			{
 				id: "/success",
 				pattern: /^\/success\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 5 },
+				page: { layouts: [0,], errors: [1,], leaf: 8 },
 				endpoint: null
 			},
 			{
 				id: "/transaction",
 				pattern: /^\/transaction\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 6 },
+				page: { layouts: [0,], errors: [1,], leaf: 9 },
+				endpoint: null
+			},
+			{
+				id: "/transaction/[codeId]",
+				pattern: /^\/transaction\/([^/]+?)\/?$/,
+				params: [{"name":"codeId","optional":false,"rest":false,"chained":false}],
+				page: { layouts: [0,], errors: [1,], leaf: 10 },
 				endpoint: null
 			}
 		],
