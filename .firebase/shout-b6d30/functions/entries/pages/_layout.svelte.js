@@ -1,6 +1,18 @@
-import { c as create_ssr_component } from "../../chunks/ssr.js";
+import { c as create_ssr_component, a as subscribe, b as add_attribute } from "../../chunks/ssr.js";
+import { a as authStore } from "../../chunks/authStore.js";
+const logo = "/_app/immutable/assets/logo.kSNaTfi5.png";
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="min-h-screen flex flex-col bg-base-100 text-neutral"><header class="bg-primary text-base-100 p-4 shadow-md" data-svelte-h="svelte-1ywiz5g"><div class="container mx-auto flex justify-between items-center"><h1 class="text-2xl font-bold text-black">Shout</h1></div></header> <main class="flex-grow container mx-auto p-4">${slots.default ? slots.default({}) : ``}</main> <footer class="bg-primary text-base-100 p-4 mt-4 shadow-md" data-svelte-h="svelte-1yf7qap"><div class="container mx-auto text-center text-black"><p>© 2024 Shout. All rights reserved.</p></div></footer></div>`;
+  let $authStore, $$unsubscribe_authStore;
+  $$unsubscribe_authStore = subscribe(authStore, (value) => $authStore = value);
+  {
+    {
+      if ($authStore) {
+        !!$authStore.currentUser;
+      }
+    }
+  }
+  $$unsubscribe_authStore();
+  return `<div class="min-h-screen static"><div class="navbar bg-base-100" data-svelte-h="svelte-1o7w5ru"><div class="navbar-start"></div> <div class="navbar-center"><img class="max-w-[200px]"${add_attribute("src", logo, 0)} alt="Your Description"></div> <div class="navbar-end"></div></div> <main>${slots.default ? slots.default({}) : ``}</main> </div>`;
 });
 export {
   Layout as default
