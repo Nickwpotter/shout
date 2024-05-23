@@ -1,6 +1,15 @@
 <script>
     import "../app.css";
-    import logo from '../lib/logo.jpeg';
+    import logo from '../lib/logo.png';
+    import { authStore } from '$lib/authStore';
+
+    let userLogged = false;
+
+    $:{
+      if($authStore) {
+        userLogged = !!$authStore.currentUser;
+      }
+    }
   </script>
 
 <div class="min-h-screen static">
@@ -8,7 +17,7 @@
   <div class="navbar-start">
   </div>
   <div class="navbar-center">
-    <img class="max-w-[150px]" src={logo} alt="Your Description" />
+    <img class="max-w-[200px]" src={logo} alt="Your Description" />
   </div>
   <div class="navbar-end">
 
