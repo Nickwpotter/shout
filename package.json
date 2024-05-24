@@ -36,6 +36,7 @@
 	"dependencies": {
 		"daisyui": "^4.11.1",
 		"firebase": "^10.12.1",
-		"qrcode": "^1.5.3"
+		"qrcode": "^1.5.3",
+		"svelte-spa-router": "^4.0.1"
 	}
 }

@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { db } from "../../firebase";
+    import { db } from "../../../firebase";
     import {collection, getDocs, query, where,} from "firebase/firestore";
     import { authStore } from '$lib/authStore';
 
@@ -39,7 +39,7 @@
 <div>
     <div class="w-full flex justify-between p-4">
         <h1 class="text-xl font-bold text-white">Your Campaigns</h1>
-        <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/campaigns/new`)}}>
+        <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/new`)}}>
             Create new Campaign
         </button>
     </div>
@@ -75,4 +75,3 @@
         </div>
     </div>
 </div>
-

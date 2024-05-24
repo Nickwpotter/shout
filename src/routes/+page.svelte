@@ -3,6 +3,7 @@
     import { writable } from "svelte/store";
     import { db } from "../firebase";
     import { collection, addDoc } from "firebase/firestore";
+	import { goto } from "$app/navigation";
   
     const showModal = writable(true);
     let visitorEmail = '';
@@ -12,7 +13,13 @@
     const closeModal = () => {
       showModal.set(false);
     };
-  
+    const registerUser = async () => {
+      try {
+        await goto("/auth/sign-up");
+      }catch{
+        console.error("Error sending the user to the registration: ")
+      }
+    }
     const submitVisitorInfo = async () => {
       try {
         await addDoc(collection(db, "visitors"), {
@@ -38,6 +45,7 @@
       <h1 class="text-3xl font-bold text-white mb-6">Welcome to Shout</h1>
       <p class="text-lg text-white mb-4">Our mission is to help local restaurants gain more visibility through influencer marketing.</p>
       <p class="text-lg text-white mb-4">For sales inquiries, please contact us at: <span class="font-bold">801-726-9049</span></p>
+      <button class="btn btn-primary mt-4" on:click={registerUser}>Get Started</button>
     </div>
   </div>
 </div>
