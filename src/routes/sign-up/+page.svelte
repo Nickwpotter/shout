@@ -11,7 +11,7 @@
             userLogged = !!$authStore.currentUser;
             console.log('userLogged', userLogged);
             if(userLogged) {
-                goto(`/campaigns`);
+                goto(`/app/campaigns`);
             }
         }
     }

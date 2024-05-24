@@ -19,7 +19,7 @@ onAuthStateChanged(auth, async (user) => {
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
             const userData = userDoc.data();
-            authStore.set({ isLoading: false, currentUser: user, userData: userData, userRef: userDocRef, userType: userData.accountType ? userData.accountType : null }); // Get data from the document
+            authStore.set({ isLoading: false, currentUser: user, userData: userData, userRef: userDocRef, userType: userData.type ? userData.type : null }); // Get data from the document
         } else {
             authStore.set({ isLoading: false, currentUser: user });
         }
