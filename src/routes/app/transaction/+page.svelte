@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { db } from "../../../firebase.js";
+  import { db } from "../../../firebase";
   import { collection, addDoc, getDoc, doc, updateDoc, increment } from "firebase/firestore";
   import { writable } from "svelte/store";
   import { goto } from "$app/navigation";

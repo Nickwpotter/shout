@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
-    import { db } from "../../../../firebase.js";
-    import { collection, addDoc, getDoc, getDocs, query, doc, where } from "firebase/firestore";
+    import { db } from "../../../../firebase";
+    import {collection, addDoc, getDoc, getDocs, query, doc} from "firebase/firestore";
     import { writable } from "svelte/store";
     import { authStore } from '$lib/authStore';
     import { page } from '$app/stores';
@@ -21,8 +21,8 @@
 
     let isNewCode = true;
 
-    // const baseUrl = 'http://localhost:5173/app/transaction';
-    const baseUrl = 'https://shout-b6d30.web.app/app/transaction';
+    const baseUrl = 'http://localhost:5173/app/transaction';
+    // const baseUrl = 'https://shout-b6d30.web.app/transaction';
     let promotionStartDate = '';
     let promotionDuration = 0;
     let durationUnit = 'days';
@@ -32,10 +32,12 @@
     let codeDocData;
 
     onMount(async () => {
-        if(codeId) {
             if (codeId === 'new') {
                 // get influencers to select
-                const q = query(collection(db, "users"), where('type', '==', 'influencer'));
+                // TODO replace with query of users where type = influencer
+                // const q = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
+                // const q = query(collection(db, "users"), where('type', '==', "influencer"));
+                const q = query(collection(db, "influencers"));
                 const querySnapshot = await getDocs(q);
                 influencers = querySnapshot.docs.map((doc) => ({
                     // Get the document data
@@ -53,14 +55,14 @@
 
                 // Get the influencer reference from the codeDocData
                 const influencerRef = codeDocData.influencer; // Assuming the reference is stored under "influencer"
-
+                console.log(influencerRef);
                 // Fetch the influencer document
                 const influencerDoc = await getDoc(influencerRef);
                 const influencerData = influencerDoc.data();
                 influencerName = influencerData.name;
             }
-        }
             merchantName = $authStore?.userData?.name;
+            console.log('merchantName', merchantName);
     });
 
 
@@ -93,7 +95,7 @@
             codeLink = `${baseUrl}/${codeId}`;
             codeDataURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(codeLink)}&size=200x200&format=png`;
             errorMessage.set('');
-            await goto(`/campaigns/${codeId}`);
+            await goto(`/app/campaigns/${codeId}`);
             window.location.reload();
         } catch (error) {
             console.error("Error generating QR Code:", error);
@@ -206,6 +208,8 @@
                         <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4" on:click={downloadQRCode}>Download QR Code</button>
                     </div>
                 </div>
+            {:else}
+                <div>Something went wrong </div>
             {/if}
         {/if}
     {/if}

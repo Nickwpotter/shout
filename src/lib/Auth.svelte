@@ -3,6 +3,7 @@
     import { setDoc, doc } from "firebase/firestore";
     import { db } from "../firebase.js";
     import { writable } from "svelte/store";
+	import { goto } from '$app/navigation';
 
     let registered = true;
     let email = '';
@@ -74,6 +75,7 @@
         if ($authStore.currentUser) {
             // User is logged in
             console.log('Logged in user:', $authStore.currentUser);
+            goto("../app/campaigns")
             // Redirect or show content for logged-in users
         } else {
             // User is not logged in
