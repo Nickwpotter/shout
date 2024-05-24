@@ -3,7 +3,6 @@
     import { db } from "../../../firebase";
     import {collection, getDocs, query, where,} from "firebase/firestore";
     import { authStore } from '$lib/authStore';
-
     import { goto } from "$app/navigation";
 
     let codes = [];
