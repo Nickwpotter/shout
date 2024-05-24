@@ -15,16 +15,27 @@
         }
     });
 
-    async function getCodes() {
-        const q = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
-        const querySnapshot = await getDocs(q);
-        codes = querySnapshot.docs.map((doc) => ({
-            // Get the document data
-            ...doc.data(),
-            // Store the document reference
-            ref: doc.ref,
-        }));
-        console.log('codes', codes);
+    async function getCodes(userType) {
+        if (userType === 'merchant') {
+            const q = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
+            const querySnapshot = await getDocs(q);
+            codes = querySnapshot.docs.map((doc) => ({
+                // Get the document data
+                ...doc.data(),
+                // Store the document reference
+                ref: doc.ref,
+            }));
+        } else if(userType === 'influencer') {
+            const q = query(collection(db, "codes"), where('influencer', '==', $authStore.userRef));
+            const querySnapshot = await getDocs(q);
+            codes = querySnapshot.docs.map((doc) => ({
+                // Get the document data
+                ...doc.data(),
+                // Store the document reference
+                ref: doc.ref,
+            }));
+        }
+
     }
 
 
