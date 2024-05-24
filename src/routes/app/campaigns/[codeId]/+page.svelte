@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
-    import { db } from "../../../firebase";
-    import {collection, addDoc, getDoc, getDocs, query, doc} from "firebase/firestore";
+    import { db } from "../../../../firebase.js";
+    import { collection, addDoc, getDoc, getDocs, query, doc, where } from "firebase/firestore";
     import { writable } from "svelte/store";
     import { authStore } from '$lib/authStore';
     import { page } from '$app/stores';
@@ -21,8 +21,8 @@
 
     let isNewCode = true;
 
-    const baseUrl = 'http://localhost:5173/transaction';
-    // const baseUrl = 'https://shout-b6d30.web.app/transaction';
+    // const baseUrl = 'http://localhost:5173/app/transaction';
+    const baseUrl = 'https://shout-b6d30.web.app/app/transaction';
     let promotionStartDate = '';
     let promotionDuration = 0;
     let durationUnit = 'days';
@@ -32,10 +32,10 @@
     let codeDocData;
 
     onMount(async () => {
+        if(codeId) {
             if (codeId === 'new') {
                 // get influencers to select
-                // TODO replace with query of users where type = influencer
-                const q = query(collection(db, "influencers"));
+                const q = query(collection(db, "users"), where('type', '==', 'influencer'));
                 const querySnapshot = await getDocs(q);
                 influencers = querySnapshot.docs.map((doc) => ({
                     // Get the document data
@@ -59,8 +59,8 @@
                 const influencerData = influencerDoc.data();
                 influencerName = influencerData.name;
             }
+        }
             merchantName = $authStore?.userData?.name;
-            console.log('merchantName', merchantName);
     });
 
 
