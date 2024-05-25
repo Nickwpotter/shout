@@ -1,8 +1,5 @@
 <script>
     import Auth from "$lib/Auth.svelte";
-    import { authStore } from "$lib/authStore.js";
-    import { goto } from "$app/navigation";
-
     // let userLogged = false;
 
     // $:{
@@ -18,6 +15,6 @@
 
 </script>
 
-<div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
+<div class="min-h-screen max-w-screen w-screen sm:flex sm:flex-row mx-0 justify-center">
     <Auth/>
 </div>
