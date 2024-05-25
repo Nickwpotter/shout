@@ -1,4 +1,4 @@
-import { writable, derived} from 'svelte/store';
+import { writable} from 'svelte/store';
 import {auth, db} from '../firebase.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateEmail, updatePassword, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from "firebase/firestore";
@@ -26,9 +26,6 @@ onAuthStateChanged(auth, async (user) => {
         authStore.set({ isLoading: false, currentUser: null, userData: null }); // Set userDoc to null when user is not logged in
     }
 });
-
-// added this as a way to check if a user was authenticated
-export const isAuthenticated = derived(authStore, $authStore => !$authStore.isLoading && $authStore.currentUser !== null);
 
 export const authHandlers = {
     signup: async (email, password) => {
