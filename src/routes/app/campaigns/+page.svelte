@@ -21,8 +21,6 @@
 
     onMount(async () => {
         if ($authStore.userType) {
-            console.log($authStore.userType)
-
             await getData($authStore.userType);
             loading = false;  // Set loading to false after data is fetched
         }
@@ -31,12 +29,6 @@
     async function getData(userType) {
         let codesQuery;
         let transactionsQuery;
-
-        // Ensure $authStore and userRef are defined
-        if (!$authStore || !$authStore.userRef) {
-            console.error('User is not authenticated.');
-            return;
-        }
 
         if (userType === 'merchant') {
             codesQuery = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
