@@ -35,7 +35,7 @@
                 // get influencers to select
                 // TODO replace with query of users where type = influencer
                 // const q = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
-                const q = query(collection(db, "users"), where('type', '==', "$authStore.userRef"));
+                const q = query(collection(db, "users"), where('type', '==', "influencer"));
                 // const q = query(collection(db, "users"), where );
                 const querySnapshot = await getDocs(q);
                 influencers = querySnapshot.docs.map((doc) => ({
