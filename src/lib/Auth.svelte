@@ -86,13 +86,13 @@
 
 
 
-<div class="hero bg-base-100">
-    <div class="hero-content flex-col lg:flex-row-reverse">
+<div class="bg-base-100 min-w-min w-screen">
+    <div class="flex flex-col md:flex-row w-full items-center justify-center gap-x-28 px-2 lg:px-6">
         <div class="text-center lg:text-left text-white lg:ml-4">
             <h1 class="text-5xl font-bold">Let's make some <span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">noise</span> together.</h1>
             <p class="py-6">Unlock the secrets to successful influencer marketing. Login now!</p>
         </div>
-        <div class="max-w-sm min-w-[400px] bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg">
+        <div class="max-w-sm min-w-[350px] bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg">
             <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100 !rounded-lg">
                 <form class="card-body">
                     {#if !registered}

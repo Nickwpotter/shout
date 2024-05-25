@@ -18,6 +18,6 @@
 
 </script>
 
-<div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
+<div class="min-h-screen max-w-screen w-screen sm:flex sm:flex-row mx-0 justify-center">
     <Auth/>
 </div>
