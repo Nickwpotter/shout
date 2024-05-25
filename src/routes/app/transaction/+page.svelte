@@ -4,6 +4,7 @@
   import { collection, addDoc, getDoc, doc, updateDoc, increment } from "firebase/firestore";
   import { writable } from "svelte/store";
   import { goto } from "$app/navigation";
+  import { authStore } from '$lib/authStore';
 
   let employeeName = '';
   let transactionAmount = '';

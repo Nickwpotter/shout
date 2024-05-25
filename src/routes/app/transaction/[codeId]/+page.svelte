@@ -5,6 +5,7 @@
     import { writable } from "svelte/store";
     import { page } from '$app/stores';
     import { authStore } from '$lib/authStore';
+    import { goto } from "$app/navigation";
 
     let employeeName = '';
     let transactionAmount = '';
@@ -16,6 +17,7 @@
     let codeDocData;
     let successfulTransaction = false;
     let loading = writable(true);
+    let isMerchant = false;
 
     onMount(async () => {
         codeId = $page.params.codeId;
@@ -88,6 +90,17 @@
             loading.set(false);
         }
     };
+
+  // Check if user is a merchant. Only merchant accounts can create transactions.
+  $:{
+      if ($authStore.userType === "merchant") {
+        isMerchant = true;
+        console.log($authStore.userType)
+      }
+      else {
+        goto("/app/campaigns");
+      }
+    }
 </script>
 
 

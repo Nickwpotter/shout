@@ -1,4 +1,4 @@
-import { writable} from 'svelte/store';
+import { writable } from 'svelte/store';
 import {auth, db} from '../firebase.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateEmail, updatePassword, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from "firebase/firestore";
