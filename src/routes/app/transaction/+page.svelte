@@ -17,7 +17,6 @@
     qrCodeId = params.get('qrcode') || '';
     console.log(qrCodeId);
     if (qrCodeId) {
-      console.log("Made it here ")
       const qrcodeDocRef = doc(db, "qrcodes", qrCodeId);
       const qrcodeDoc = await getDoc(qrcodeDocRef);
 
