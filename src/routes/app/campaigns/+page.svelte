@@ -104,7 +104,6 @@
     $: {
         if ($authStore.userRef) {
             userType = $authStore.userType;
-            console.log(userType)
             getData(userType);
         }
     }
