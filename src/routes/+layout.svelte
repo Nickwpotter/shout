@@ -1,6 +1,7 @@
 <script>
   import "../app.css";
-  import logo from '../lib/logo.png';
+  import logo from '$lib/logo.png';
+  import profilePicture from '$lib/profile.png';
   import { authStore, authHandlers} from '$lib/authStore';
   import { goto } from "$app/navigation";
 
@@ -15,18 +16,18 @@
   async function logout() {
     try {
       await authHandlers.logout(); // Assuming you have a logout function in your authStore
-      goto('/auth/sign-up'); // Redirect to the login page
+      await goto('/auth/sign-up'); // Redirect to the login page
     } catch (error) {
       console.error("Logout failed", error);
     }
   }
 
   async function goToProfile() {
-    goto('/app/profile');
+    await goto('/app/profile');
   }
 
   async function goToCampaigns() {
-    goto('/app/campaigns');
+    await goto('/app/campaigns');
   }
 </script>
 
@@ -40,8 +41,8 @@
       {#if userLogged}
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <img alt="Tailwind CSS Navbar component" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+          <div class="w-10 rounded-full bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% border border-white">
+            <img alt="Profile" src={profilePicture} />
           </div>
         </div>
         <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">

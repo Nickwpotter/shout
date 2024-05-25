@@ -81,7 +81,7 @@
         }
     }
 
-    function viewQRCode(codeId) {
+    function viewCode(codeId) {
         goto(`/app/campaigns/${codeId}`);
     }
 
@@ -132,7 +132,7 @@
                               <td>{_code.promotionDuration}</td>
                               <td>{_code.influencer.id}</td>
                               <td>{_code.usageCount}</td>
-                              <td><a class="text-orange-400 hover:text-blue-700" href="javascript:void(0);" on:click={() => viewQRCode(_code.ref.id)}>View QR</a></td>
+                              <td><a class="text-orange-400 hover:text-blue-700" href="javascript:void(0);" on:click={() => viewCode(_code.ref.id)}>View Code</a></td>
                           </tr>
                       {/each}
                       </tbody>
@@ -140,7 +140,7 @@
               </div>
           </div>
           <div class="w-full flex justify-between p-4">
-              <h1 class="text-[28px] font-bold text-white">Liftime</h1>
+              <h1 class="text-[28px] font-bold text-white">Lifetime</h1>
           </div>
           <div class="flex justify-center my-3">
               <div class="stats stats-vertical md:stats-horizontal shadow w-full">

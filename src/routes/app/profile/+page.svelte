@@ -2,10 +2,9 @@
     import "../../../app.css";
     import { authStore, authHandlers } from '$lib/authStore';
     import { onMount } from 'svelte';
-    import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
+    import { getDoc, updateDoc } from 'firebase/firestore';
     import { goto } from "$app/navigation";
 
-    let userLogged = false;
     let user = {
       name: '',
       email: '',
@@ -14,16 +13,14 @@
     };
     let showModal = false;
     let loading = true;
-  
-    $: if ($authStore) {
-      userLogged = !!$authStore.currentUser;
-    }
-  
-    const db = getFirestore();
+
+    onMount(async () => {
+        await fetchUserData();
+    })
   
     async function fetchUserData() {
-      if ($authStore.currentUser) {
-        const userDoc = await getDoc(doc(db, 'users', $authStore.currentUser.uid));
+      if ($authStore.userRef) {
+        const userDoc = await getDoc($authStore.userRef);
         if (userDoc.exists()) {
           user = userDoc.data();
         } else {
@@ -37,9 +34,8 @@
     }
   
     async function updateUser() {
-      if ($authStore.currentUser) {
-        const userRef = doc(db, 'users', $authStore.currentUser.uid);
-        await updateDoc(userRef, {
+      if ($authStore.userRef) {
+        await updateDoc($authStore.userRef, {
           name: user.name,
           phone: user.phone
         });
@@ -50,13 +46,12 @@
     async function logout() {
         try {
             await authHandlers.logout(); // Assuming you have a logout function in your authStore
-            goto('../auth/sign-up'); // Redirect to the login page
+            await goto('/auth/sign-up'); // Redirect to the login page
         } catch (error) {
         console.error("Logout failed", error);
         }
     }
-  
-    onMount(fetchUserData);
+
 </script>
 
 <div class="min-h-screen flex items-center justify-center p-4">

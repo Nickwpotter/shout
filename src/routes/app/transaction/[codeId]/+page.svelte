@@ -67,7 +67,6 @@
         }
         loading.set(true);
         // add transaction document to firebase
-        // TODO replace names with firebase reference values
         try {
             await addDoc(collection(db, "transactions"), {
                 codeId,
@@ -89,10 +88,6 @@
             loading.set(false);
         }
     };
-
-    $:{
-        console.log('loading', $loading);
-    }
 </script>
 
 
