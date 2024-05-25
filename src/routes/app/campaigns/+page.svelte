@@ -21,6 +21,8 @@
 
     onMount(async () => {
         if ($authStore.userType) {
+            console.log($authStore.userType)
+
             await getData($authStore.userType);
             loading = false;  // Set loading to false after data is fetched
         }
@@ -30,35 +32,49 @@
         let codesQuery;
         let transactionsQuery;
 
+        // Ensure $authStore and userRef are defined
+        if (!$authStore || !$authStore.userRef) {
+            console.error('User is not authenticated.');
+            return;
+        }
+
         if (userType === 'merchant') {
             codesQuery = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
             transactionsQuery = query(collection(db, "transactions"), where('merchant', '==', $authStore.userRef));
         } else if (userType === 'influencer') {
             codesQuery = query(collection(db, "codes"), where('influencer', '==', $authStore.userRef));
             transactionsQuery = query(collection(db, "transactions"), where('influencer', '==', $authStore.userRef));
+        } else {
+            console.error('Invalid user type.');
+            return;
         }
 
-        const [codesSnapshot, transactionsSnapshot] = await Promise.all([
-            getDocs(codesQuery),
-            getDocs(transactionsQuery)
-        ]);
+        try {
+            const [codesSnapshot, transactionsSnapshot] = await Promise.all([
+                getDocs(codesQuery),
+                getDocs(transactionsQuery)
+            ]);
 
-        codes = codesSnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            ref: doc.ref
-        }));
+            codes = codesSnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                ref: doc.ref
+            }));
 
-        transactions = transactionsSnapshot.docs.map((doc) => doc.data());
+            transactions = transactionsSnapshot.docs.map((doc) => doc.data());
 
-        // Set all transactions and update displayed transactions
-        allTransactions = transactions;
-        updateDisplayedTransactions();
+            // Set all transactions and update displayed transactions
+            allTransactions = transactions;
+            updateDisplayedTransactions();
 
-        // Extract transaction amounts
-        lifetimeAccountTransactions = transactions.length;
-        lifetimeAccountSales = transactions.reduce((sum, tx) => sum + tx.transactionAmount, 0);
-        averageTransactionPrice = lifetimeAccountTransactions ? lifetimeAccountSales / lifetimeAccountTransactions : 0;
-        loading = false;
+            // Extract transaction amounts
+            lifetimeAccountTransactions = transactions.length;
+            lifetimeAccountSales = transactions.reduce((sum, tx) => sum + tx.transactionAmount, 0);
+            averageTransactionPrice = lifetimeAccountTransactions ? lifetimeAccountSales / lifetimeAccountTransactions : 0;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            loading = false;
+        }
     }
 
     function updateDisplayedTransactions() {
@@ -88,6 +104,7 @@
     $: {
         if ($authStore.userRef) {
             userType = $authStore.userType;
+            console.log(userType)
             getData(userType);
         }
     }
