@@ -31,7 +31,7 @@
                         const merchantID = codeDocData.merchant.id;
                         if ($authStore.userRef.id === merchantID) {
                             isValidMerchant = true;
-                            validateCode();
+                            await validateCode(); // Ensure this is awaited
                         } else {
                             goto("/app/campaigns");
                         }
@@ -69,11 +69,17 @@
         if (isValid) {
             const influencerRef = codeDocData.influencer;
             const influencerDoc = await getDoc(influencerRef);
-            const influencerData = influencerDoc.data();
-            influencerEmail = influencerData.email;
-            isCodeValid.set(true);
+            if (influencerDoc.exists()) {
+                const influencerData = influencerDoc.data();
+                influencerEmail = influencerData.email;
+                isCodeValid.set(true);
+            } else {
+                errorMessage.set('Influencer data not found.');
+                isCodeValid.set(false);
+            }
         } else {
             errorMessage.set('This code is no longer valid.');
+            isCodeValid.set(false);
         }
         loading.set(false);
     }
