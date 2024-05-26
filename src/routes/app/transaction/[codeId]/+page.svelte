@@ -17,58 +17,74 @@
     let codeDocData;
     let successfulTransaction = false;
     let loading = writable(true);
-    let isMerchant = false;
+    let isValidMerchant = false;
 
     onMount(async () => {
-        codeId = $page.params.codeId;
-        loading.set
-        if (codeId) {
-            codeDocRef = doc(db, "codes", codeId);
-            const codeDoc = await getDoc(codeDocRef);
-
-            if (codeDoc.exists()) {
-                // TODO changed created time with start date
-                codeDocData = codeDoc.data();
-                const currentTime = new Date().getTime();
-                const createdTime = codeDocData.timestamp.toDate().getTime();
-                const duration = Number(codeDocData.promotionDuration);
-                const durationUnit = codeDocData.durationUnit;
-
-                let isValid = false;
-                if (durationUnit === 'days') {
-                    isValid = (currentTime - createdTime) / (1000 * 60 * 60 * 24) <= duration;
-                } else if (durationUnit === 'hours') {
-                    isValid = (currentTime - createdTime) / (1000 * 60 * 60) <= duration;
-                }
-
-                if (isValid) {
-                    const influencerRef = codeDocData.influencer; // Assuming the reference is stored under "influencer"
-                    // Fetch the influencer document
-                    const influencerDoc = await getDoc(influencerRef);
-                    const influencerData = influencerDoc.data();
-                    influencerEmail = influencerData.email;
-                    isCodeValid.set(true);
-                } else {
-                    errorMessage.set('This code is no longer valid.');
+        if ($authStore.userType === "merchant") {
+            codeId = $page.params.codeId;
+            if (codeId) {
+                codeDocRef = doc(db, "codes", codeId);
+                try {
+                    const codeDoc = await getDoc(codeDocRef);
+                    if (codeDoc.exists()) {
+                        codeDocData = codeDoc.data();
+                        const merchantID = codeDocData.merchant.id;
+                        if ($authStore.userRef.id === merchantID) {
+                            isValidMerchant = true;
+                            validateCode();
+                        } else {
+                            goto("/app/campaigns");
+                        }
+                    } else {
+                        errorMessage.set('Invalid QR code.');
+                        goto("/app/campaigns");
+                    }
+                } catch (error) {
+                    console.error('Error fetching code document:', error);
+                    errorMessage.set('Error fetching code. Please try again.');
+                    goto("/app/campaigns");
                 }
             } else {
-                errorMessage.set('Invalid QR code.');
+                errorMessage.set('No code found.');
+                goto("/app/campaigns");
             }
         } else {
-            errorMessage.set('No code found.');
+            goto("/app/campaigns");
+        }
+    });
+
+    async function validateCode() {
+        const currentTime = new Date().getTime();
+        const createdTime = codeDocData.timestamp.toDate().getTime();
+        const duration = Number(codeDocData.promotionDuration);
+        const durationUnit = codeDocData.durationUnit;
+
+        let isValid = false;
+        if (durationUnit === 'days') {
+            isValid = (currentTime - createdTime) / (1000 * 60 * 60 * 24) <= duration;
+        } else if (durationUnit === 'hours') {
+            isValid = (currentTime - createdTime) / (1000 * 60 * 60) <= duration;
+        }
+
+        if (isValid) {
+            const influencerRef = codeDocData.influencer;
+            const influencerDoc = await getDoc(influencerRef);
+            const influencerData = influencerDoc.data();
+            influencerEmail = influencerData.email;
+            isCodeValid.set(true);
+        } else {
+            errorMessage.set('This code is no longer valid.');
         }
         loading.set(false);
-    });
+    }
 
     const submitTransaction = async () => {
         const amount = parseFloat(transactionAmount);
-        // check for required fields
         if (!employeeName.trim() || amount <= 0 || isNaN(amount)) {
             errorMessage.set('All fields are required and the transaction amount must be a valid number.');
             return;
         }
         loading.set(true);
-        // add transaction document to firebase
         try {
             await addDoc(collection(db, "transactions"), {
                 codeId,
@@ -90,20 +106,7 @@
             loading.set(false);
         }
     };
-
-  // Check if user is a merchant. Only merchant accounts can create transactions.
-  $:{
-      if ($authStore.userType === "merchant") {
-        isMerchant = true;
-        console.log($authStore.userType)
-      }
-      else {
-        goto("/app/campaigns");
-      }
-    }
 </script>
-
-
 
 <div class="p-8 bg-base-100 text-black min-h-screen flex flex-col items-center">
     {#if $loading}
