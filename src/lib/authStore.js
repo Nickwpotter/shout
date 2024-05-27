@@ -28,7 +28,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 export const authHandlers = {
-    signup: async (email, password) => {
+    signup: async (email, password) => { 
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         authStore.set({ isLoading: false, currentUser: user });

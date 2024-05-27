@@ -55,6 +55,6 @@
     </div>
   </div>
   <main>
-    <slot></slot>
+    <slot/>
   </main>
 </div>

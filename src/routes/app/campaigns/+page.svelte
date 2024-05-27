@@ -21,6 +21,7 @@
 
     onMount(async () => {
         if ($authStore.userType) {
+            console.log($authStore.userType)
             await getData($authStore.userType);
             loading = false;  // Set loading to false after data is fetched
         }
