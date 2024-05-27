@@ -147,7 +147,7 @@
                         Sign in
                       </button>
                     </div>
-                    <button on:click={() => { registered = false }} class="btn btn-active btn-link">
+                    <button on:click={() => { registered = false }} class="btn !text-white btn-active btn-link">
                       Don't have an account? Sign up
                     </button>
                   {:else}

@@ -129,6 +129,9 @@
                           <th>Duration</th>
                           <th>Influencer</th>
                           <th>Total Transactions</th>
+                          {#if userType === "merchant"}
+                            <th></th>
+                          {/if}
                           <th></th>
                       </tr>
                       </thead>

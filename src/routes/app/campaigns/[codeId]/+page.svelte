@@ -121,6 +121,10 @@
             });
     };
 
+    const goToCodePage = () => {
+        goto(`/app/transaction/${codeId}`); // Replace '/signup' with the desired route
+    };
+
     $:{
         if($authStore) {
             merchantName = $authStore?.userData?.name
@@ -201,7 +205,7 @@
                         <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Influencer:</span> {influencerName}</p>
                         <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Start Date: </span> {codeDocData.promotionStartDate}</p>
                         <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">QR Code ID: </span> {codeId}</p>
-                        <a href={codeLink} target="_blank" class="btn btn-active btn-link">Test QR Code Link</a>
+                        <button on:click={goToCodePage} class="btn !text-white btn-active btn-link">Test QR Code Link</button>
                         <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4" on:click={downloadQRCode}>Download QR Code</button>
                     </div>
                 </div>
