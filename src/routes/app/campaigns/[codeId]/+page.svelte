@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { db } from "../../../../firebase";
-    import {collection, addDoc, getDoc, getDocs, query, doc, where} from "firebase/firestore";
+    import { collection, addDoc, getDoc, getDocs, query, where, doc} from "firebase/firestore";
     import { writable } from "svelte/store";
     import { authStore } from '$lib/authStore';
     import { page } from '$app/stores';
@@ -30,38 +30,49 @@
     let codeDocRef;
     let codeDocData;
 
+    let recentTransactions = writable([]);
+
     onMount(async () => {
-            if (codeId === 'new') {
-                // get influencers to select
-                // TODO replace with query of users where type = influencer
-                // const q = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
-                const q = query(collection(db, "users"), where('type', '==', "influencer"));
-                // const q = query(collection(db, "users"), where );
-                const querySnapshot = await getDocs(q);
-                influencers = querySnapshot.docs.map((doc) => ({
-                    // Get the document data
-                    ...doc.data(),
-                    // Store the document reference
-                    ref: doc.ref,
-                }));
-            } else {
-                isNewCode = false;
-                codeDocRef = doc(db, "codes", codeId);
-                const codeDoc = await getDoc(codeDocRef);
-                codeDocData = codeDoc.data();
-                codeLink = `${baseUrl}/${codeId}`;
-                codeDataURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(codeLink)}&size=200x200&format=png`;
+        if (codeId === 'new') {
+            // get influencers to select
+            const q = query(collection(db, "users"), where('type', '==', "influencer"));
+            const querySnapshot = await getDocs(q);
+            influencers = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                ref: doc.ref,
+            }));
+        } else {
+            isNewCode = false;
+            codeDocRef = doc(db, "codes", codeId);
+            const codeDoc = await getDoc(codeDocRef);
+            codeDocData = codeDoc.data();
+            codeLink = `${baseUrl}/${codeId}`;
+            codeDataURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(codeLink)}&size=200x200&format=png`;
 
-                // Get the influencer reference from the codeDocData
-                const influencerRef = codeDocData.influencer; // Assuming the reference is stored under "influencer"
-                // Fetch the influencer document
-                const influencerDoc = await getDoc(influencerRef);
-                const influencerData = influencerDoc.data();
-                influencerName = influencerData.name;
-            }
+            const influencerRef = codeDocData.influencer;
+            const influencerDoc = await getDoc(influencerRef);
+            const influencerData = influencerDoc.data();
+            influencerName = influencerData.name;
+
+            const merchantRef = codeDocData.merchant;
+            const merchantDoc = await getDoc(merchantRef);
+            const merchantData = merchantDoc.data();
+            merchantName = merchantData.name;
+        }
+
+        if ($authStore.userType === 'merchant') {
             merchantName = $authStore?.userData?.name;
-    });
+        }
 
+        // Fetch recent transactions
+        const transactionsQuery = query(collection(db, "transactions"), where('code', '==', codeDocRef));
+        const transactionsSnapshot = await getDocs(transactionsQuery);
+        let transactions = transactionsSnapshot.docs.map(doc => ({
+            ...doc.data(),
+            id: doc.id
+        }));
+        recentTransactions.set(transactions);
+    });
 
     const resetForm = () => {
         influencer = '';
@@ -72,7 +83,6 @@
     };
 
     const generateCode = async () => {
-        //check for required fields
         if (!influencer || !promotionStartDate.trim() || promotionDuration <= 0) {
             errorMessage.set('All fields are required.');
             return;
@@ -122,16 +132,13 @@
     };
 
     const goToCodePage = () => {
-        goto(`/app/transaction/${codeId}`); // Replace '/signup' with the desired route
+        goto(`/app/transaction/${codeId}`);
     };
 
-    $:{
-        if($authStore) {
-            merchantName = $authStore?.userData?.name
-        }
+    $: if ($authStore) {
+        merchantName = $authStore?.userData?.name;
     }
 </script>
-
 
 <div class="p-8 bg-base-100 text-black min-h-screen flex flex-col items-center">
     {#if $loading}
@@ -196,8 +203,9 @@
             </div>
         {:else}
             {#if codeDocData && codeDataURL}
-                <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg">
-                    <div class="w-full max-w-sm shadow-lg rounded-lg p-6 bg-black flex flex-col items-center">
+            <div class="lg:flex lg:flex-row">
+                <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg flex-col">
+                    <div class="min-w-sm shadow-lg rounded-lg p-6 bg-black flex flex-col items-center">
                         <div class="bg-white p-2 mb-4 rounded-lg">
                             <img src={codeDataURL} alt="QR Code" class="w-40 h-40"/>
                         </div>
@@ -209,14 +217,36 @@
                         <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4" on:click={downloadQRCode}>Download QR Code</button>
                     </div>
                 </div>
+                {#if $recentTransactions.length > 0}
+                <div class="overflow-x-auto flex-col mt-4 lg:mt-0 lg:ml-6">
+                    <h1 class="text-white">Recent Transactions</h1>
+                    <table class="table text-white w-full lg:w-auto">
+                        <!-- head -->
+                        <thead>
+                        <tr>
+                            <th>Row #</th>
+                            <th>Employee Name</th>
+                            <th>Date</th>
+                            <th>Transaction Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {#each $recentTransactions as transaction, index}
+                            <tr>
+                                <td>{index + 1}</td>
+                                <td class="whitespace-normal">{transaction.employeeName}</td>
+                                <td class="whitespace-normal">{new Date(transaction.timestamp.seconds * 1000).toLocaleString()}</td>
+                                <td class="whitespace-normal">${transaction.transactionAmount.toFixed(2)}</td>
+                            </tr>
+                        {/each}
+                        </tbody>
+                    </table>
+                </div>
+                {/if}
+            </div>
             {:else}
                 <div>Something went wrong </div>
             {/if}
         {/if}
     {/if}
 </div>
-
-
-
-
-
