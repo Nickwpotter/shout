@@ -31,6 +31,9 @@
     let codeDocData;
 
     let recentTransactions = writable([]);
+    let totalSales = 0;
+    let averageTransactionValue = 0;
+    let totalTransactions = 0;
 
     onMount(async () => {
         if (codeId === 'new') {
@@ -72,6 +75,11 @@
             id: doc.id
         }));
         recentTransactions.set(transactions);
+
+        // Calculate total sales, average transaction value, and total transactions
+        totalTransactions = transactions.length;
+        totalSales = transactions.reduce((sum, transaction) => sum + transaction.transactionAmount, 0);
+        averageTransactionValue = totalTransactions > 0 ? totalSales / totalTransactions : 0;
     });
 
     const resetForm = () => {
@@ -195,7 +203,7 @@
                     </button>
                     {#if $errorMessage}
                         <div role="alert" class="alert bg-gradient-to-r to-[#fd1d1d] from-[#fcb045] !text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.29 3.86l1.42-1.42 9.42 9.42-1.42 1.42-9.42-9.42zm2.71 6.42V6.7a9 9 0 00-1.71-5.3l1.42-1.42A10.978 10.978 0 0114 6.7v3.58l5.7 5.7a10.978 10.978 0 011.42-1.42L14 6.7v3.58z" /></svg>
                             <span>{$errorMessage}</span>
                         </div>
                     {/if}
@@ -203,46 +211,65 @@
             </div>
         {:else}
             {#if codeDocData && codeDataURL}
-            <div class="lg:flex lg:flex-row">
-                <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg flex-col">
-                    <div class="min-w-sm shadow-lg rounded-lg p-6 bg-black flex flex-col items-center">
-                        <div class="bg-white p-2 mb-4 rounded-lg">
-                            <img src={codeDataURL} alt="QR Code" class="w-40 h-40"/>
+            <div class="lg:flex lg:flex-col my-3 py-3">
+                <div class="lg:flex-row">
+                    <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg flex-col">
+                        <div class="min-w-sm shadow-lg rounded-lg p-6 bg-black flex flex-col items-center">
+                            <div class="bg-white p-2 mb-4 rounded-lg">
+                                <img src={codeDataURL} alt="QR Code" class="w-40 h-40"/>
+                            </div>
+                            <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Merchant:</span> {merchantName}</p>
+                            <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Influencer:</span> {influencerName}</p>
+                            <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Start Date: </span> {codeDocData.promotionStartDate}</p>
+                            <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">QR Code ID: </span> {codeId}</p>
+                            {#if $authStore.userType === "merchant"}
+                            <button on:click={goToCodePage} class="btn !text-white btn-active btn-link">Test QR Code Link</button>
+                            {/if}
+                            <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4" on:click={downloadQRCode}>Download QR Code</button>
                         </div>
-                        <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Merchant:</span> {merchantName}</p>
-                        <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Influencer:</span> {influencerName}</p>
-                        <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">Start Date: </span> {codeDocData.promotionStartDate}</p>
-                        <p class="text-white font-bold mb-2"><span class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% inline-block text-transparent bg-clip-text">QR Code ID: </span> {codeId}</p>
-                        <button on:click={goToCodePage} class="btn !text-white btn-active btn-link">Test QR Code Link</button>
-                        <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4" on:click={downloadQRCode}>Download QR Code</button>
                     </div>
+                    {#if $recentTransactions.length > 0}
+                    <div class="lg:flex-row stats stats-vertical md:stats-horizontal shadow w-full">
+                        <div class="stat">
+                            <div class="stat-title">Total Sales</div>
+                            <div class="stat-value">${totalSales.toFixed(2)}</div>
+                        </div>
+                        
+                        <div class="stat">
+                            <div class="stat-title">Average Transaction Price</div>
+                            <div class="stat-value">${averageTransactionValue.toFixed(2)}</div>
+                        </div>
+                        
+                        <div class="stat">
+                            <div class="stat-title">Total Code Transactions</div>
+                            <div class="stat-value">{totalTransactions}</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto flex-col mt-4 lg:mt-0 lg:ml-6">
+                        <h1 class="text-white">Recent Transactions</h1>
+                        <table class="table text-white min-w-full lg:w-auto lg:max-">
+                            <thead>
+                                <tr>
+                                    <th class="hidden md:table-cell">Row #</th>
+                                    <th>Employee Name</th>
+                                    <th class="hidden sm:table-cell">Date</th>
+                                    <th>Transaction Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#each $recentTransactions as transaction, index}
+                                <tr>
+                                    <td class="hidden md:table-cell">{index + 1}</td>
+                                    <td>{transaction.employeeName}</td>
+                                    <td class="hidden sm:table-cell">{new Date(transaction.timestamp.seconds * 1000).toLocaleString()}</td>
+                                    <td>${transaction.transactionAmount.toFixed(2)}</td>
+                                </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    </div>
+                    {/if}
                 </div>
-                {#if $recentTransactions.length > 0}
-                <div class="overflow-x-auto flex-col mt-4 lg:mt-0 lg:ml-6">
-                    <h1 class="text-white">Recent Transactions</h1>
-                    <table class="table text-white w-full lg:w-auto">
-                        <!-- head -->
-                        <thead>
-                        <tr>
-                            <th>Row #</th>
-                            <th>Employee Name</th>
-                            <th>Date</th>
-                            <th>Transaction Value</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {#each $recentTransactions as transaction, index}
-                            <tr>
-                                <td>{index + 1}</td>
-                                <td class="whitespace-normal">{transaction.employeeName}</td>
-                                <td class="whitespace-normal">{new Date(transaction.timestamp.seconds * 1000).toLocaleString()}</td>
-                                <td class="whitespace-normal">${transaction.transactionAmount.toFixed(2)}</td>
-                            </tr>
-                        {/each}
-                        </tbody>
-                    </table>
-                </div>
-                {/if}
             </div>
             {:else}
                 <div>Something went wrong </div>
