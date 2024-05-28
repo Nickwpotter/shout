@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { db } from "../../../../firebase";
-    import {collection, addDoc, getDoc, getDocs, query, doc} from "firebase/firestore";
+    import {collection, addDoc, getDoc, getDocs, query, doc, where} from "firebase/firestore";
     import { writable } from "svelte/store";
     import { authStore } from '$lib/authStore';
     import { page } from '$app/stores';
@@ -18,7 +18,6 @@
     let influencer;
     let influencers = [];
     let influencerName;
-
     let isNewCode = true;
 
     const baseUrl = 'http://localhost:5173/app/transaction';
@@ -36,8 +35,8 @@
                 // get influencers to select
                 // TODO replace with query of users where type = influencer
                 // const q = query(collection(db, "codes"), where('merchant', '==', $authStore.userRef));
-                // const q = query(collection(db, "users"), where('type', '==', "influencer"));
-                const q = query(collection(db, "influencers"));
+                const q = query(collection(db, "users"), where('type', '==', "influencer"));
+                // const q = query(collection(db, "users"), where );
                 const querySnapshot = await getDocs(q);
                 influencers = querySnapshot.docs.map((doc) => ({
                     // Get the document data
@@ -55,14 +54,12 @@
 
                 // Get the influencer reference from the codeDocData
                 const influencerRef = codeDocData.influencer; // Assuming the reference is stored under "influencer"
-                console.log(influencerRef);
                 // Fetch the influencer document
                 const influencerDoc = await getDoc(influencerRef);
                 const influencerData = influencerDoc.data();
                 influencerName = influencerData.name;
             }
             merchantName = $authStore?.userData?.name;
-            console.log('merchantName', merchantName);
     });
 
 

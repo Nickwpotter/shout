@@ -5,8 +5,13 @@
     "src": ".svelte-kit/generated/server/internal.js",
     "isEntry": true,
     "imports": [
-      "_internal.js"
+      "_internal.js",
+      "_paths.js"
     ]
+  },
+  "_app.js": {
+    "file": "_app/immutable/assets/app.vTsYsBAm.css",
+    "src": "_app.js"
   },
   "_authStore.js": {
     "file": "chunks/authStore.js",
@@ -42,8 +47,13 @@
     "file": "chunks/internal.js",
     "name": "internal",
     "imports": [
-      "_ssr.js"
+      "_ssr.js",
+      "_paths.js"
     ]
+  },
+  "_paths.js": {
+    "file": "chunks/paths.js",
+    "name": "paths"
   },
   "_ssr.js": {
     "file": "chunks/ssr.js",
@@ -73,13 +83,18 @@
     "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
     "isEntry": true,
     "imports": [
-      "_internal.js",
+      "_paths.js",
       "_exports.js",
-      "_index.js"
+      "_index.js",
+      "_internal.js"
     ]
   },
+  "src/lib/hero.png": {
+    "file": "_app/immutable/assets/hero.CvLaY7wU.png",
+    "src": "src/lib/hero.png"
+  },
   "src/lib/logo.png": {
-    "file": "_app/immutable/assets/logo.kSNaTfi5.png",
+    "file": "_app/immutable/assets/logo.DOk5Hlwk.png",
     "src": "src/lib/logo.png"
   },
   "src/routes/+layout.svelte": {
@@ -88,14 +103,13 @@
     "src": "src/routes/+layout.svelte",
     "isEntry": true,
     "imports": [
-      "_ssr.js",
-      "_authStore.js"
+      "_ssr.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.DNNYAkfF.css"
+      "_app/immutable/assets/app.vTsYsBAm.css"
     ],
     "assets": [
-      "_app/immutable/assets/logo.kSNaTfi5.png"
+      "_app/immutable/assets/logo.DOk5Hlwk.png"
     ]
   },
   "src/routes/+page.svelte": {
@@ -106,7 +120,11 @@
     "imports": [
       "_ssr.js",
       "_index.js",
-      "_firebase.js"
+      "_firebase.js",
+      "_client.js"
+    ],
+    "assets": [
+      "_app/immutable/assets/hero.CvLaY7wU.png"
     ]
   },
   "src/routes/app/+layout.svelte": {
@@ -115,13 +133,27 @@
     "src": "src/routes/app/+layout.svelte",
     "isEntry": true,
     "imports": [
+      "_ssr.js",
+      "_authStore.js",
+      "_paths.js"
+    ],
+    "css": [
+      "_app/immutable/assets/app.vTsYsBAm.css"
+    ]
+  },
+  "src/routes/app/+page.svelte": {
+    "file": "entries/pages/app/_page.svelte.js",
+    "name": "entries/pages/app/_page.svelte",
+    "src": "src/routes/app/+page.svelte",
+    "isEntry": true,
+    "imports": [
       "_ssr.js"
     ]
   },
-  "src/routes/campaigns/+page.svelte": {
-    "file": "entries/pages/campaigns/_page.svelte.js",
-    "name": "entries/pages/campaigns/_page.svelte",
-    "src": "src/routes/campaigns/+page.svelte",
+  "src/routes/app/campaigns/+page.svelte": {
+    "file": "entries/pages/app/campaigns/_page.svelte.js",
+    "name": "entries/pages/app/campaigns/_page.svelte",
+    "src": "src/routes/app/campaigns/+page.svelte",
     "isEntry": true,
     "imports": [
       "_ssr.js",
@@ -130,10 +162,10 @@
       "_client.js"
     ]
   },
-  "src/routes/campaigns/[codeId]/+page.svelte": {
-    "file": "entries/pages/campaigns/_codeId_/_page.svelte.js",
-    "name": "entries/pages/campaigns/_codeId_/_page.svelte",
-    "src": "src/routes/campaigns/[codeId]/+page.svelte",
+  "src/routes/app/campaigns/[codeId]/+page.svelte": {
+    "file": "entries/pages/app/campaigns/_codeId_/_page.svelte.js",
+    "name": "entries/pages/app/campaigns/_codeId_/_page.svelte",
+    "src": "src/routes/app/campaigns/[codeId]/+page.svelte",
     "isEntry": true,
     "imports": [
       "_ssr.js",
@@ -144,18 +176,53 @@
       "_client.js"
     ]
   },
-  "src/routes/create-qr/+page.svelte": {
-    "file": "entries/pages/create-qr/_page.svelte.js",
-    "name": "entries/pages/create-qr/_page.svelte",
-    "src": "src/routes/create-qr/+page.svelte",
+  "src/routes/app/transaction/+page.svelte": {
+    "file": "entries/pages/app/transaction/_page.svelte.js",
+    "name": "entries/pages/app/transaction/_page.svelte",
+    "src": "src/routes/app/transaction/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_firebase.js",
+      "_index.js",
+      "_client.js"
+    ]
+  },
+  "src/routes/app/transaction/[codeId]/+page.svelte": {
+    "file": "entries/pages/app/transaction/_codeId_/_page.svelte.js",
+    "name": "entries/pages/app/transaction/_codeId_/_page.svelte",
+    "src": "src/routes/app/transaction/[codeId]/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_firebase.js",
+      "_index.js",
+      "_stores.js",
+      "_authStore.js"
+    ]
+  },
+  "src/routes/app/transaction/success/+page.svelte": {
+    "file": "entries/pages/app/transaction/success/_page.svelte.js",
+    "name": "entries/pages/app/transaction/success/_page.svelte",
+    "src": "src/routes/app/transaction/success/+page.svelte",
     "isEntry": true,
     "imports": [
       "_ssr.js",
       "_firebase.js",
       "_index.js"
-    ],
-    "css": [
-      "_app/immutable/assets/_page.CGCXDtyj.css"
+    ]
+  },
+  "src/routes/auth/sign-up/+page.svelte": {
+    "file": "entries/pages/auth/sign-up/_page.svelte.js",
+    "name": "entries/pages/auth/sign-up/_page.svelte",
+    "src": "src/routes/auth/sign-up/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_authStore.js",
+      "_firebase.js",
+      "_index.js",
+      "_client.js"
     ]
   },
   "src/routes/error/+page.svelte": {
@@ -165,55 +232,6 @@
     "isEntry": true,
     "imports": [
       "_ssr.js"
-    ]
-  },
-  "src/routes/sign-up/+page.svelte": {
-    "file": "entries/pages/sign-up/_page.svelte.js",
-    "name": "entries/pages/sign-up/_page.svelte",
-    "src": "src/routes/sign-up/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_ssr.js",
-      "_authStore.js",
-      "_firebase.js",
-      "_index.js",
-      "_client.js"
-    ]
-  },
-  "src/routes/success/+page.svelte": {
-    "file": "entries/pages/success/_page.svelte.js",
-    "name": "entries/pages/success/_page.svelte",
-    "src": "src/routes/success/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_ssr.js",
-      "_firebase.js",
-      "_index.js"
-    ]
-  },
-  "src/routes/transaction/+page.svelte": {
-    "file": "entries/pages/transaction/_page.svelte.js",
-    "name": "entries/pages/transaction/_page.svelte",
-    "src": "src/routes/transaction/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_ssr.js",
-      "_firebase.js",
-      "_index.js",
-      "_client.js"
-    ]
-  },
-  "src/routes/transaction/[codeId]/+page.svelte": {
-    "file": "entries/pages/transaction/_codeId_/_page.svelte.js",
-    "name": "entries/pages/transaction/_codeId_/_page.svelte",
-    "src": "src/routes/transaction/[codeId]/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_ssr.js",
-      "_firebase.js",
-      "_index.js",
-      "_stores.js",
-      "_authStore.js"
     ]
   }
 }

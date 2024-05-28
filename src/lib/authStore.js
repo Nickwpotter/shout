@@ -14,7 +14,6 @@ export const authStore = writable({
 
 onAuthStateChanged(auth, async (user) => {
     if (user) { // Only attempt to fetch userDoc if user is logged in
-        console.log('user', user);
         let userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {

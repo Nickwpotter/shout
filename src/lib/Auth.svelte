@@ -142,30 +142,30 @@
                         {/if}
                     </div>
                     {#if registered}
-                        <div>
-                            <button on:click={handleSubmit} type="submit" class="btn !text-white bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !rounded-lg">
-                                Sign in
-                            </button>
-                        </div>
-                        <button on:click={() => {registered = false}} class="btn btn-active btn-link">Don't have an account? Sign up</button>
-                    {:else}
-                        <label class="input input-bordered flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
-                            <input bind:value={confirmPassword} type="password" class="grow" placeholder="Confirm Password" />
-                        </label>
-                        <div>
-                            <button on:click={handleSubmit} type="submit" class="btn !text-white bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !rounded-lg">
-                                Sign Up
-                            </button>
-                        </div>
-                        <button on:click={() => { registered = true} } class="btn btn-active btn-link">Already have an account? Sign in</button>
-                    {/if}
-                    {#if $errorMessage}
-                        <div role="alert" class="alert bg-gradient-to-r to-[#fd1d1d] from-[#fcb045] !text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>{$errorMessage}</span>
-                        </div>
-                    {/if}
+                    <div>
+                      <button on:click={handleSubmit} type="submit" class="btn !text-white bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !rounded-lg">
+                        Sign in
+                      </button>
+                    </div>
+                    <button on:click={() => { registered = false }} class="btn btn-active btn-link">
+                      Don't have an account? Sign up
+                    </button>
+                  {:else}
+                    <label class="input input-bordered flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+                        <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
+                      </svg>
+                      <input bind:value={confirmPassword} type="password" class="grow" placeholder="Confirm Password" />
+                    </label>
+                    <div>
+                      <button on:click={handleSubmit} type="submit" class="btn !text-white bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !rounded-lg">
+                        Sign Up
+                      </button>
+                    </div>
+                    <button on:click={() => { registered = true }} class="btn !text-white btn-active btn-link">
+                      Already have an account? Sign in
+                    </button>
+                  {/if}
                 </form>
             </div>
         </div>
