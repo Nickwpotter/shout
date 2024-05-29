@@ -176,10 +176,10 @@
               </div>
           </div>
           <div class="overflow-x-auto justify-center shadow-md orange">
-              <div class="w-full flex justify-between p-4">
-                  <h1 class="text-[28px] font-bold text-white">Recent Transactions</h1>
-              </div>        
-              {#if recentTransactions.length > 0}
+              {#if recentTransactions.length > 0 && $authStore.userType == "merchant"}
+                <div class="w-full flex justify-between p-4">
+                    <h1 class="text-[28px] font-bold text-white">Recent Transactions</h1>
+                </div>     
                   <table class="table text-white w-1/2">
                       <!-- head -->
                       <thead>
@@ -208,7 +208,10 @@
                   <button class="join-item btn">Page {currentPage}</button>
                   <button class="join-item btn" on:click={nextPage} disabled={(currentPage * itemsPerPage) >= allTransactions.length}>»</button>
               </div>
-              {:else}
+              {:else if $authStore.userType === "merchant"}
+                <div class="w-full flex justify-between p-4">
+                    <h1 class="text-[28px] font-bold text-white">Recent Transactions</h1>
+                </div>    
                   <div class="w-full flex justify-between p-4">
                       <p>No Transactions found</p>
                   </div>
