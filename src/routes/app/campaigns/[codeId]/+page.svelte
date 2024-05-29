@@ -20,8 +20,8 @@
     let influencerName;
     let isNewCode = true;
 
-    const baseUrl = 'http://localhost:5173/app/transaction';
-    // const baseUrl = 'https://shout-b6d30.web.app/transaction';
+    // const baseUrl = 'http://localhost:5173/app/transaction';
+    const baseUrl = 'https://shout-b6d30.web.app/transaction';
     let promotionStartDate = '';
     let promotionDuration = 0;
     let durationUnit = 'days';
