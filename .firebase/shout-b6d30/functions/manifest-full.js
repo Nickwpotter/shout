@@ -10,7 +10,7 @@ return {
 	assets: new Set(["favicon.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.Dqc46p5I.js","app":"_app/immutable/entry/app.ChtnlpQx.js","imports":["_app/immutable/entry/start.Dqc46p5I.js","_app/immutable/chunks/entry.D5liSSLQ.js","_app/immutable/chunks/scheduler.PCYk-eKx.js","_app/immutable/chunks/index.eg0ioKiZ.js","_app/immutable/chunks/paths.PaoNn1MQ.js","_app/immutable/entry/app.ChtnlpQx.js","_app/immutable/chunks/scheduler.PCYk-eKx.js","_app/immutable/chunks/index.BWac97FB.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
+		client: {"start":"_app/immutable/entry/start.CM0IGwMl.js","app":"_app/immutable/entry/app.B8WvYd8s.js","imports":["_app/immutable/entry/start.CM0IGwMl.js","_app/immutable/chunks/entry.BDb0CWYC.js","_app/immutable/chunks/scheduler.PCYk-eKx.js","_app/immutable/chunks/index.eg0ioKiZ.js","_app/immutable/entry/app.B8WvYd8s.js","_app/immutable/chunks/scheduler.PCYk-eKx.js","_app/immutable/chunks/index.CKmYMgu1.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
@@ -23,7 +23,8 @@ return {
 			__memo(() => import('./nodes/8.js')),
 			__memo(() => import('./nodes/9.js')),
 			__memo(() => import('./nodes/10.js')),
-			__memo(() => import('./nodes/11.js'))
+			__memo(() => import('./nodes/11.js')),
+			__memo(() => import('./nodes/12.js'))
 		],
 		routes: [
 			{
@@ -55,38 +56,45 @@ return {
 				endpoint: null
 			},
 			{
+				id: "/app/profile",
+				pattern: /^\/app\/profile\/?$/,
+				params: [],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 7 },
+				endpoint: null
+			},
+			{
 				id: "/app/transaction",
 				pattern: /^\/app\/transaction\/?$/,
 				params: [],
-				page: { layouts: [0,2,], errors: [1,,], leaf: 7 },
+				page: { layouts: [0,2,], errors: [1,,], leaf: 8 },
 				endpoint: null
 			},
 			{
 				id: "/app/transaction/success",
 				pattern: /^\/app\/transaction\/success\/?$/,
 				params: [],
-				page: { layouts: [0,2,], errors: [1,,], leaf: 9 },
+				page: { layouts: [0,2,], errors: [1,,], leaf: 10 },
 				endpoint: null
 			},
 			{
 				id: "/app/transaction/[codeId]",
 				pattern: /^\/app\/transaction\/([^/]+?)\/?$/,
 				params: [{"name":"codeId","optional":false,"rest":false,"chained":false}],
-				page: { layouts: [0,2,], errors: [1,,], leaf: 8 },
+				page: { layouts: [0,2,], errors: [1,,], leaf: 9 },
 				endpoint: null
 			},
 			{
 				id: "/auth/sign-up",
 				pattern: /^\/auth\/sign-up\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 10 },
+				page: { layouts: [0,], errors: [1,], leaf: 11 },
 				endpoint: null
 			},
 			{
 				id: "/error",
 				pattern: /^\/error\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 11 },
+				page: { layouts: [0,], errors: [1,], leaf: 12 },
 				endpoint: null
 			}
 		],

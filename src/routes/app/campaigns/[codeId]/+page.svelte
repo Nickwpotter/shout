@@ -212,6 +212,22 @@
         {:else}
             {#if codeDocData && codeDataURL}
             <div class="lg:flex lg:flex-col my-3 py-3">
+                <div class="lg:flex-row stats stats-vertical md:stats-horizontal shadow w-full">
+                    <div class="stat">
+                        <div class="stat-title">Total Sales</div>
+                        <div class="stat-value">${totalSales.toFixed(2)}</div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="stat-title">Average Transaction Price</div>
+                        <div class="stat-value">${averageTransactionValue.toFixed(2)}</div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="stat-title">Total Code Transactions</div>
+                        <div class="stat-value">{totalTransactions}</div>
+                    </div>
+                </div>
                 <div class="lg:flex-row">
                     <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg flex-col">
                         <div class="min-w-sm shadow-lg rounded-lg p-6 bg-black flex flex-col items-center">
@@ -228,23 +244,7 @@
                             <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4" on:click={downloadQRCode}>Download QR Code</button>
                         </div>
                     </div>
-                    {#if $recentTransactions.length > 0}
-                    <div class="lg:flex-row stats stats-vertical md:stats-horizontal shadow w-full">
-                        <div class="stat">
-                            <div class="stat-title">Total Sales</div>
-                            <div class="stat-value">${totalSales.toFixed(2)}</div>
-                        </div>
-                        
-                        <div class="stat">
-                            <div class="stat-title">Average Transaction Price</div>
-                            <div class="stat-value">${averageTransactionValue.toFixed(2)}</div>
-                        </div>
-                        
-                        <div class="stat">
-                            <div class="stat-title">Total Code Transactions</div>
-                            <div class="stat-value">{totalTransactions}</div>
-                        </div>
-                    </div>
+                    {#if $recentTransactions.length > 0 && $authStore.userType === "merchant"}
                     <div class="overflow-x-auto flex-col mt-4 lg:mt-0 lg:ml-6">
                         <h1 class="text-white">Recent Transactions</h1>
                         <table class="table text-white min-w-full lg:w-auto lg:max-">
