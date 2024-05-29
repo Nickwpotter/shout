@@ -21,6 +21,7 @@
 
     onMount(async () => {
         if ($authStore.userType) {
+            console.log($authStore.userType)
             await getData($authStore.userType);
             loading = false;  // Set loading to false after data is fetched
         }
@@ -128,6 +129,9 @@
                           <th>Duration</th>
                           <th>Influencer</th>
                           <th>Total Transactions</th>
+                          {#if userType === "merchant"}
+                            <th></th>
+                          {/if}
                           <th></th>
                       </tr>
                       </thead>
