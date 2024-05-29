@@ -1,9 +1,8 @@
-import { c as create_ssr_component, a as subscribe, e as escape, b as add_attribute } from "../../../../chunks/ssr.js";
+import { c as create_ssr_component, b as subscribe, e as escape, a as add_attribute } from "../../../../chunks/ssr.js";
 import "../../../../chunks/firebase.js";
 import "firebase/firestore";
 import { w as writable } from "../../../../chunks/index.js";
 import "../../../../chunks/client.js";
-import "../../../../chunks/authStore.js";
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $qrCodeValid, $$unsubscribe_qrCodeValid;
   let $errorMessage, $$unsubscribe_errorMessage;

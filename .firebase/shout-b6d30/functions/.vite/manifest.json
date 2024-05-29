@@ -5,11 +5,12 @@
     "src": ".svelte-kit/generated/server/internal.js",
     "isEntry": true,
     "imports": [
-      "_internal.js"
+      "_internal.js",
+      "_paths.js"
     ]
   },
   "_app.js": {
-    "file": "_app/immutable/assets/app.B8zm962-.css",
+    "file": "_app/immutable/assets/app.vTsYsBAm.css",
     "src": "_app.js"
   },
   "_authStore.js": {
@@ -46,8 +47,13 @@
     "file": "chunks/internal.js",
     "name": "internal",
     "imports": [
-      "_ssr.js"
+      "_ssr.js",
+      "_paths.js"
     ]
+  },
+  "_paths.js": {
+    "file": "chunks/paths.js",
+    "name": "paths"
   },
   "_ssr.js": {
     "file": "chunks/ssr.js",
@@ -77,9 +83,10 @@
     "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
     "isEntry": true,
     "imports": [
-      "_internal.js",
+      "_paths.js",
       "_exports.js",
-      "_index.js"
+      "_index.js",
+      "_internal.js"
     ]
   },
   "src/lib/hero.png": {
@@ -90,26 +97,19 @@
     "file": "_app/immutable/assets/logo.DOk5Hlwk.png",
     "src": "src/lib/logo.png"
   },
-  "src/lib/profile.png": {
-    "file": "_app/immutable/assets/profile.CZ5rsEOB.png",
-    "src": "src/lib/profile.png"
-  },
   "src/routes/+layout.svelte": {
     "file": "entries/pages/_layout.svelte.js",
     "name": "entries/pages/_layout.svelte",
     "src": "src/routes/+layout.svelte",
     "isEntry": true,
     "imports": [
-      "_ssr.js",
-      "_authStore.js",
-      "_client.js"
+      "_ssr.js"
     ],
     "css": [
-      "_app/immutable/assets/app.B8zm962-.css"
+      "_app/immutable/assets/app.vTsYsBAm.css"
     ],
     "assets": [
-      "_app/immutable/assets/logo.DOk5Hlwk.png",
-      "_app/immutable/assets/profile.CZ5rsEOB.png"
+      "_app/immutable/assets/logo.DOk5Hlwk.png"
     ]
   },
   "src/routes/+page.svelte": {
@@ -135,10 +135,10 @@
     "imports": [
       "_ssr.js",
       "_authStore.js",
-      "_client.js"
+      "_paths.js"
     ],
     "css": [
-      "_app/immutable/assets/app.B8zm962-.css"
+      "_app/immutable/assets/app.vTsYsBAm.css"
     ]
   },
   "src/routes/app/+page.svelte": {
@@ -176,21 +176,6 @@
       "_client.js"
     ]
   },
-  "src/routes/app/profile/+page.svelte": {
-    "file": "entries/pages/app/profile/_page.svelte.js",
-    "name": "entries/pages/app/profile/_page.svelte",
-    "src": "src/routes/app/profile/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_ssr.js",
-      "_authStore.js",
-      "_client.js"
-    ],
-    "css": [
-      "_app/immutable/assets/_page.BABAGXlO.css",
-      "_app/immutable/assets/app.B8zm962-.css"
-    ]
-  },
   "src/routes/app/transaction/+page.svelte": {
     "file": "entries/pages/app/transaction/_page.svelte.js",
     "name": "entries/pages/app/transaction/_page.svelte",
@@ -200,8 +185,7 @@
       "_ssr.js",
       "_firebase.js",
       "_index.js",
-      "_client.js",
-      "_authStore.js"
+      "_client.js"
     ]
   },
   "src/routes/app/transaction/[codeId]/+page.svelte": {
@@ -214,8 +198,7 @@
       "_firebase.js",
       "_index.js",
       "_stores.js",
-      "_authStore.js",
-      "_client.js"
+      "_authStore.js"
     ]
   },
   "src/routes/app/transaction/success/+page.svelte": {
@@ -238,6 +221,7 @@
       "_ssr.js",
       "_authStore.js",
       "_firebase.js",
+      "_index.js",
       "_client.js"
     ]
   },

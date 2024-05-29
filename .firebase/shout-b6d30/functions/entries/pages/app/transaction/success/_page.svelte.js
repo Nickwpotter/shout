@@ -1,4 +1,4 @@
-import { c as create_ssr_component, a as subscribe, e as escape } from "../../../../../chunks/ssr.js";
+import { c as create_ssr_component, b as subscribe, e as escape } from "../../../../../chunks/ssr.js";
 import "../../../../../chunks/firebase.js";
 import "firebase/firestore";
 import { w as writable } from "../../../../../chunks/index.js";

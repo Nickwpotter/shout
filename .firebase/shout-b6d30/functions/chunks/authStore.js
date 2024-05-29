@@ -11,6 +11,7 @@ const authStore = writable({
 });
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+    console.log("user", user);
     let userDocRef = doc(db, "users", user.uid);
     const userDoc = await getDoc(userDocRef);
     if (userDoc.exists()) {

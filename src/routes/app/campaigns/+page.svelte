@@ -152,7 +152,7 @@
               </div>
           </div>
           <div class="w-full flex justify-between p-4">
-              <h1 class="text-[28px] font-bold text-white">Lifetime Data</h1>
+              <h1 class="text-[28px] font-bold text-white">Lifetime</h1>
           </div>
           <div class="flex justify-center my-3">
               <div class="stats stats-vertical md:stats-horizontal shadow w-full">
@@ -176,10 +176,10 @@
               </div>
           </div>
           <div class="overflow-x-auto justify-center shadow-md orange">
-              {#if recentTransactions.length > 0 && userType === "merchant"}
-                <div class="w-full flex justify-between p-4">
-                    <h1 class="text-[28px] font-bold text-white">Recent Transactions</h1>
-                </div>       
+              <div class="w-full flex justify-between p-4">
+                  <h1 class="text-[28px] font-bold text-white">Recent Transactions</h1>
+              </div>        
+              {#if recentTransactions.length > 0}
                   <table class="table text-white w-1/2">
                       <!-- head -->
                       <thead>
@@ -208,10 +208,7 @@
                   <button class="join-item btn">Page {currentPage}</button>
                   <button class="join-item btn" on:click={nextPage} disabled={(currentPage * itemsPerPage) >= allTransactions.length}>»</button>
               </div>
-              {:else if userType === "merchant" }
-                <div class="w-full flex justify-between p-4">
-                    <h1 class="text-[28px] font-bold text-white">Recent Transactions</h1>
-                </div>    
+              {:else}
                   <div class="w-full flex justify-between p-4">
                       <p>No Transactions found</p>
                   </div>
