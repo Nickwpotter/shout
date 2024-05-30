@@ -15,10 +15,6 @@
     let lifetimeAccountTransactions = 0;
     let loading = true;  // Added loading state
 
-    // Variables for modals
-    let partnerships = [];
-    let showPartnersModal = false;
-
     // Pagination state
     let currentPage = 1;
     const itemsPerPage = 5;
@@ -132,12 +128,12 @@
           <h1 class="text-[28px] font-bold text-white">Your Campaigns</h1>
           <div class="flex flex-col">
           {#if userType === 'merchant'}
-                <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/new`)}}>
+                <button class="mb-4 btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/new`)}}>
                   Create new Campaign
                 </button>
           {/if}
-          <button class="my-4 btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async () => {await getPartners()}}>
-            See Partners
+          <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/partners`)}}>
+            View Partners
           </button>
         </div>
       </div>
@@ -252,41 +248,5 @@
               </div>
           {/if}
       {/if}
-  </div>
-{/if}
-
-{#if showPartnersModal}
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg shadow-lg w-full max-w-4xl">
-      <div class="rounded-lg w-full bg-black p-6 overflow-auto">
-        <div class="w-full flex justify-between p-4">
-          <h1 class="text-[28px] font-bold text-white">Partnerships</h1>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="table text-white w-full">
-            <!-- head -->
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th class="hidden lg:table-cell">Email</th>
-                <th>Phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {#each partnerships as partner}
-                <tr>
-                  <td>{partner.name}</td>
-                  <td class="hidden lg:table-cell">{partner.email}</td>
-                  <td>{partner.phone}</td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
-        <div class="flex justify-center mt-4">
-          <button class="btn btn-secondary shadow-md" on:click={() => {showPartnersModal = false}}>Close</button>
-        </div>
-      </div>
-    </div>
   </div>
 {/if}
