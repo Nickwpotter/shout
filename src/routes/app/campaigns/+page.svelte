@@ -76,15 +76,17 @@
 
     async function getPartners(){
         let partnerSnapShot; 
-        if ($authStore.userType == "merchant"){
-            const influencerQuery = query(collection(db, "users"), where('type', '==', "influencer"));
-            partnerSnapShot = await getDocs(influencerQuery);
+        if (partnerships != []){
+            if ($authStore.userType == "merchant"){
+                const influencerQuery = query(collection(db, "users"), where('type', '==', "influencer"));
+                partnerSnapShot = await getDocs(influencerQuery);
+            }
+            else if ($authStore.userType == "influencer"){
+                const merchantQuery = query(collection(db, "users"), where('type', '==', "merchant"));
+                partnerSnapShot = await getDocs(merchantQuery);
+            }
+            partnerships = partnerSnapShot?.docs.map((doc) => doc.data());
         }
-        else if ($authStore.userType == "influencer"){
-            const merchantQuery = query(collection(db, "users"), where('type', '==', "merchant"));
-            partnerSnapShot = await getDocs(merchantQuery);
-        }
-        partnerships = partnerSnapShot?.docs.map((doc) => doc.data());
         showPartnersModal = true;
     }
 
