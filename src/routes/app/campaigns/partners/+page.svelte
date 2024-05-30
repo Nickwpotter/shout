@@ -26,38 +26,42 @@
             }
             partnerships = partnerSnapShot?.docs.map((doc) => doc.data());
         }
-        showPartnersModal = true;
+    }
+
+    function formatPhoneNumber(phoneNumber) {
+        if (phoneNumber && phoneNumber.toString().length === 10) {
+            const str = phoneNumber.toString();
+            return `(${str.slice(0, 3)})${str.slice(3, 6)}-${str.slice(6)}`;
+        }
+        return phoneNumber;
     }
 
 </script>
 
-<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg shadow-lg w-full max-w-4xl">
-      <div class="rounded-lg w-full bg-black p-6 overflow-auto">
+<div class="container mx-auto p-6">
+    <div class="rounded-lg bg-black p-6 overflow-auto">
         <div class="w-full flex justify-between p-4">
-          <h1 class="text-[28px] font-bold text-white">Partnerships</h1>
+            <h1 class="text-[28px] font-bold text-white">Partnerships</h1>
         </div>
         <div class="overflow-x-auto">
-          <table class="table text-white w-full">
-            <!-- head -->
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th class="hidden lg:table-cell">Email</th>
-                <th>Phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {#each partnerships as partner}
-                <tr>
-                  <td>{partner.name}</td>
-                  <td class="hidden lg:table-cell">{partner.email}</td>
-                  <td>{partner.phone}</td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
+            <table class="table text-white w-full">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th class="hidden lg:table-cell">Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each partnerships as partner}
+                        <tr>
+                            <td>{partner.name}</td>
+                            <td class="hidden lg:table-cell">{partner.email}</td>
+                            <td>{formatPhoneNumber(partner.phone)}</td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
         </div>
-      </div>
     </div>
-  </div>
+</div>
