@@ -70,6 +70,22 @@
         }
     }
 
+    async function getPartners(){
+        let partnerSnapShot; 
+        if (partnerships != []){
+            if ($authStore.userType == "merchant"){
+                const influencerQuery = query(collection(db, "users"), where('type', '==', "influencer"));
+                partnerSnapShot = await getDocs(influencerQuery);
+            }
+            else if ($authStore.userType == "influencer"){
+                const merchantQuery = query(collection(db, "users"), where('type', '==', "merchant"));
+                partnerSnapShot = await getDocs(merchantQuery);
+            }
+            partnerships = partnerSnapShot?.docs.map((doc) => doc.data());
+        }
+        showPartnersModal = true;
+    }
+
     function updateDisplayedTransactions() {
         const start = (currentPage - 1) * itemsPerPage;
         const end = start + itemsPerPage;
@@ -110,11 +126,16 @@
   <div class="m-8">
       <div class="w-full flex justify-between p-4">
           <h1 class="text-[28px] font-bold text-white">Your Campaigns</h1>
+          <div class="flex flex-col">
           {#if userType === 'merchant'}
-              <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/new`)}}>
+                <button class="mb-4 btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/new`)}}>
                   Create new Campaign
-              </button>
+                </button>
           {/if}
+          <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/partners`)}}>
+            View Partners
+          </button>
+        </div>
       </div>
       {#if codes.length > 0}
           <div class="w-full p-4">

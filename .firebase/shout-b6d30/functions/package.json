@@ -6,6 +6,7 @@
   "dependencies": {
     "daisyui": "^4.11.1",
     "firebase": "^10.12.1",
+    "firebase-tools": "^13.10.1",
     "qrcode": "^1.5.3",
     "svelte-spa-router": "^4.0.1",
     "@sveltejs/kit": "^2.0.0",
