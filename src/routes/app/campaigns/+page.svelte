@@ -1,10 +1,12 @@
 <script>
     import { onMount } from "svelte";
     import { db } from "../../../firebase";
-    import { collection, getDocs, query, where } from "firebase/firestore";
+    import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
     import { authStore } from '$lib/authStore';
     import { goto } from "$app/navigation";
+    import { writable } from "svelte/store";
 
+    const showReferralModal = writable(false);
     let codes = [];
     let userType;
     let transactions = [];
@@ -14,6 +16,20 @@
     let lifetimeAccountSales = 0;
     let lifetimeAccountTransactions = 0;
     let loading = true;  // Added loading state
+
+    let referralEmail = '';
+    let referralName = '';
+    let referralPhone = '';
+    let referralWebsite = '';
+    let referralMessage = '';
+
+    let alertMessage = '';
+    let alertType = '';
+    let showAlert = writable(false);
+
+    const closeModal = () => {
+        showReferralModal.set(false);
+    };
 
     // Pagination state
     let currentPage = 1;
@@ -110,6 +126,54 @@
         goto(`/app/campaigns/${codeId}`);
     }
 
+    const validateEmail = (email) => {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    };
+
+    const validatePhone = (phone) => {
+        const phonePattern = /^(?:\+1\s?)?\(?([2-9][0-9]{2})\)?[-.\s]?([2-9][0-9]{2})[-.\s]?([0-9]{4})$/;
+        return phonePattern.test(phone);
+    };
+
+    const submitReferralInfo = async () => {
+        if (!validateEmail(referralEmail)) {
+            alertMessage = 'Please enter a valid email address.';
+            alertType = 'alert-error';
+            return;
+        }
+
+        if (!validatePhone(referralPhone)) {
+            alertMessage = 'Please enter a valid US phone number.';
+            alertType = 'alert-error';
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, "referrals"), {
+                name: referralName,
+                email: referralEmail,
+                website: referralWebsite,
+                phone: referralPhone,
+                timestamp: new Date(),
+                userReferring: $authStore.userRef,
+                userReferringType: userType
+            });
+            alertMessage = 'Your referral has been submitted successfully!';
+            alertType = 'alert-success bg-black text-white';
+            showReferralModal.set(false);
+            showAlert.set(true);
+            // Set the alert to false after 3 seconds
+            setTimeout(() => {
+                showAlert.set(false);
+            }, 3000);
+        } catch (error) {
+            console.error("Error submitting referral info:", error);
+            alertMessage = 'Error submitting your referral. Please try again.';
+            alertType = 'alert-error';
+        }
+    };
+
     $: {
         if ($authStore.userRef) {
             userType = $authStore.userType;
@@ -131,11 +195,16 @@
                 <button class="mb-4 btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/new`)}}>
                   Create new Campaign
                 </button>
+          {:else}
+              <div class="tooltip" data-tip="Get extra commissions from the stores you refer to us.">
+                <button on:click={() => showReferralModal.set(true)} class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4 min-w-[250px] max-w-[300px] !p-px"><span class="bg-black text-white font-bold rounded-lg h-full w-full text-center flex items-center justify-center">Refer a merchant</span></button>
+              </div>
           {/if}
-          <button class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none shadow-md" on:click={async() => {await goto(`/app/campaigns/partners`)}}>
-            View Partners
-          </button>
+          <div class="tooltip" data-tip="Get extra commissions from the stores you refer to us.">
+            <button on:click={async() => {await goto(`/app/campaigns/partners`)}} class="btn bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% !text-white !rounded-lg border-none w-full mt-4 min-w-[250px] max-w-[300px] !p-px"><span class="bg-black text-white font-bold rounded-lg h-full w-full text-center flex items-center justify-center">View Partners</span></button>
+          </div>
         </div>
+
       </div>
       {#if codes.length > 0}
           <div class="w-full p-4">
@@ -249,4 +318,66 @@
           {/if}
       {/if}
   </div>
+{/if}
+
+{#if $showReferralModal}
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-gradient-to-r from-[#833ab4] from-10% via-[#fd1d1d] via-30% to-[#fcb045] to-90% p-2 rounded-lg shadow-lg w-full max-w-md">
+            <div class="rounded-lg w-full max-w-md bg-black p-6">
+                {#if alertMessage && alertType === 'alert-error'}
+                    <div role="alert" class="alert alert-error mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span>{alertMessage}</span>
+                    </div>
+                {/if}
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text text-white">Name</span>
+                    </label>
+                    <input type="text" bind:value={referralName} class="input input-bordered border-white text-white"/>
+                </div>
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text text-white">Email</span>
+                    </label>
+                    <input type="email" bind:value={referralEmail} class="input input-bordered border-white text-white"/>
+                </div>
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text text-white">Website</span>
+                    </label>
+                    <input type="email" bind:value={referralWebsite} class="input input-bordered border-white text-white"/>
+                </div>
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text text-white">Phone Number</span>
+                    </label>
+                    <input type="tel" bind:value={referralPhone} class="input input-bordered border-white text-white"/>
+                </div>
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text text-white">Message</span>
+                    </label>
+                    <textarea bind:value={referralMessage} class="textarea textarea-bordered border-white text-white" placeholder="Message"></textarea>
+                </div>
+                <button class="btn btn-primary w-full shadow-md mb-4" on:click={submitReferralInfo}>Submit</button>
+                <button class="btn btn-secondary w-full shadow-md" on:click={closeModal}>Close</button>
+            </div>
+        </div>
+    </div>
+{/if}
+
+{#if $showAlert}
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-black text-white p-4 rounded-lg shadow-lg w-full max-w-md mt-20">
+            <div role="alert" class="alert {alertType}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{alertMessage}</span>
+            </div>
+        </div>
+    </div>
 {/if}
